@@ -1,17 +1,71 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Car Model Lookup</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Car Database</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      tr:hover {background-color:#f5f5f5;}
+    </style>
   </head>
   <body>
-    <h1>Car Model Lookup</h1>
-    <form id="car-model-form">
-      <label for="car-model-input">Enter a car model:</label>
-      <input type="text" id="car-model-input" name="car-model-input">
-      <button type="submit">Submit</button>
-    </form>
-    <div id="car-model-result"></div>
-    <script src="script.js"></script>
+    <h1>Car Database</h1>
+    <input type="text" id="search" placeholder="Search...">
+    <br><br>
+    <table>
+      <thead>
+        <tr>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Year</th>
+          <th>Trim</th>
+          <th>Engine</th>
+          <th>Fuel Efficiency</th>
+          <th>Horsepower</th>
+          <th>Top Speed</th>
+        </tr>
+      </thead>
+      <tbody id="results">
+      </tbody>
+    </table>
+    <script>
+      $(document).ready(function() {
+        $("#search").on("keyup", function() {
+          var query = $(this).val().toLowerCase();
+          $.ajax({
+            url: "car-api2.p.rapidapi.com",
+            dataType: "jsonp",
+            success: function(data) {
+              var results = $("#results");
+              results.empty();
+              $.each(data.Models, function(i, model) {
+                if (model.make_name.toLowerCase().indexOf(query) !== -1 ||
+                    model.model_name.toLowerCase().indexOf(query) !== -1 ||
+                    model.model_trim.toLowerCase().indexOf(query) !== -1) {
+                  var row = $("<tr>");
+                  $("<td>").text(model.make_name).appendTo(row);
+                  $("<td>").text(model.model_name).appendTo(row);
+                  $("<td>").text(model.model_year).appendTo(row);
+                  $("<td>").text(model.model_trim).appendTo(row);
+                  $("<td>").text(model.model_engine_cc).appendTo(row);
+                  $("<td>").text(model.model_fuel_efficiency_city + "/" + model.model_fuel_efficiency_highway).appendTo(row);
+                  $("<td>").text(model.model_engine_power_ps).appendTo(row);
+                  $("<td>").text(model.model_top_speed_kph).appendTo(row);
+                  results.append(row);
+                }
+              });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
