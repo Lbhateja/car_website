@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#search").on("keyup", function() {
       var query = $(this).val().toLowerCase();
       $.ajax({
-        url: "https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getModels&make=&year=&sold_in_us=1",
+        url: "car-api2.p.rapidapi.com",
         dataType: "jsonp",
         success: function(data) {
           var results = $("#results");
