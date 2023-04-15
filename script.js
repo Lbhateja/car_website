@@ -6,7 +6,7 @@ form.addEventListener('submit', (event) => {
 
   const userInput = document.querySelector('#car-model-input').value;
 
-  fetch(`https://car-api2.p.rapidapi.com/api/vin/KNDJ23AU4N7154467`)
+  fetch(`car-api2.p.rapidapi.com`)
     .then(response => response.json())
     .then(data => {
       // display the data on the webpage
@@ -15,7 +15,6 @@ form.addEventListener('submit', (event) => {
         <h2>${data.model}</h2>
         <p>Make: ${data.make}</p>
         <p>Year: ${data.year}</p>
-        <p>Price: $${data.price}</p>
       `;
     })
     .catch(error => {
